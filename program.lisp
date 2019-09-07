@@ -26,20 +26,20 @@
 (defun make-program-config-file (program-dir)
   (let ((config-file (merge-pathnames* program-dir "program")))
     (with-open-file (out config-file :direction :output)
-      (format out "~S" '(:title "your podcast name"
-                         :link "your podcast page url"
-                         :author "your name"
-                         :category ""
-                         :image "image url"
-                         :language "your podcast language ISO 639-1"
-                         :explicit nil)))))
+      (format out "(:title ~S" "your podcast name")
+      (format out "~% :link ~S" "your podcast page url")
+      (format out "~% :author ~S" "your name")
+      (format out "~% :category ~S" "")
+      (format out "~% :image ~S" "image url")
+      (format out "~% :language ~S" "your podcast language ISO 639-1")
+      (format out "~% :explicit nil)" nil))))
 
 (defun make-program-notes-directory (program-dir)
-  (let ((notes-dir (ensure-directory-pathname 
+  (let ((notes-dir (ensure-directory-pathname
                     (merge-pathnames* program-dir "notes"))))
     (ensure-directories-exist notes-dir)))
 
 (defun make-program-pages-directory (program-dir)
-  (let ((pages-dir (ensure-directory-pathname 
+  (let ((pages-dir (ensure-directory-pathname
                     (merge-pathnames* program-dir "pages"))))
     (ensure-directories-exist pages-dir)))
