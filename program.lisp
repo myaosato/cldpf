@@ -10,7 +10,7 @@
 (defun make-program (name &key dir)
   (let ((program-dir (make-program-directory name dir)))
     (make-program-config-file program-dir)
-    (make-program-notes-directory program-dir)
+    (make-program-items-directory program-dir)
     (make-program-pages-directory program-dir)))
 
 (defun make-program-directory (name dir)
@@ -34,9 +34,9 @@
       (format out "~% :language ~S" "your podcast language ISO 639-1")
       (format out "~% :explicit nil)" nil))))
 
-(defun make-program-notes-directory (program-dir)
+(defun make-program-items-directory (program-dir)
   (let ((notes-dir (ensure-directory-pathname
-                    (merge-pathnames* program-dir "notes"))))
+                    (merge-pathnames* program-dir "items"))))
     (ensure-directories-exist notes-dir)))
 
 (defun make-program-pages-directory (program-dir)
