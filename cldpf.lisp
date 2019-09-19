@@ -1,4 +1,5 @@
 (uiop/package:define-package :cldpf/cldpf (:nicknames) (:use :cl) (:shadow)
+                             (:import-from :cldpf/item :make-item-file)
                              (:import-from :cldpf/feed :make-feed)
                              (:import-from :cldpf/program :make-program)
                              (:export) (:intern))
