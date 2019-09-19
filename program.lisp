@@ -42,4 +42,16 @@
 (defun make-program-pages-directory (program-dir)
   (let ((pages-dir (ensure-directory-pathname
                     (merge-pathnames* program-dir "pages"))))
-    (ensure-directories-exist pages-dir)))
+    (ensure-directories-exist pages-dir)
+    (make-pages-audios-directory pages-dir)
+    (make-pages-notes-directory pages-dir)))
+
+(defun make-pages-audios-directory (pages-dir)
+  (let ((audio-dir (ensure-directory-pathname
+                    (merge-pathnames* pages-dir "audios"))))
+    (ensure-directories-exist audio-dir)))
+
+(defun make-pages-notes-directory (pages-dir)
+  (let ((audio-dir (ensure-directory-pathname
+                    (merge-pathnames* pages-dir "notes"))))
+    (ensure-directories-exist audio-dir)))
