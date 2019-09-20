@@ -46,6 +46,7 @@
   (list 
     (tag "title" (getf plist :title))
     (tag "link" (getf plist :link))
+    (tag "language" (getf plist :language))
     (tag "googleplay:author" (getf plist :author))
     (tag "itunes:author" (getf plist :author))
     (tag "googleplay:category" (getf plist :category))

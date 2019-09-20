@@ -10,6 +10,7 @@
 (defun make-program (name &key dir)
   (let ((program-dir (make-program-directory name dir)))
     (make-program-config-file program-dir)
+    (make-feed-list-file program-dir)
     (make-program-items-directory program-dir)
     (make-program-pages-directory program-dir)))
 
@@ -29,10 +30,16 @@
       (format out "(:title ~S" "your podcast name")
       (format out "~% :link ~S" "your podcast page url")
       (format out "~% :author ~S" "your name")
+      (format out "~% :language ~S" "your podcast language ISO 639-1")
       (format out "~% :category ~S" "")
       (format out "~% :image ~S" "image url")
-      (format out "~% :language ~S" "your podcast language ISO 639-1")
-      (format out "~% :explicit nil)" nil))))
+      (format out "~% :description ~S" "")
+      (format out "~% :explicit nil)"))))
+
+(defun make-feed-list-file (program-dir)
+  (let ((config-file (merge-pathnames* program-dir ".cldpf-feed")))
+    (with-open-file (out config-file :direction :output)
+      (format out "()"))))
 
 (defun make-program-items-directory (program-dir)
   (let ((notes-dir (ensure-directory-pathname
