@@ -16,5 +16,3 @@
 *.wx64fsl
 *.wx32fsl
 dev/
-devtest.lisp
-devtest.sh
