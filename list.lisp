@@ -1,7 +1,8 @@
 (uiop/package:define-package :cldpf/list (:nicknames) (:use :cl) (:shadow)
                              (:import-from :uiop/pathname
                               :ensure-directory-pathname :merge-pathnames*)
-                             (:export :read-item-file :read-program-file)
+                             (:export :write-feed-file :read-item-file
+                              :read-program-file)
                              (:intern))
 (in-package :cldpf/list)
 ;;don't edit above
@@ -15,3 +16,13 @@
          (item-file (merge-pathnames* items-dir name)))
     (with-open-file (in item-file :direction :input)
       (read in nil nil))))
+
+(defun read-feed-file (program-dir)
+  (let ((feed-file (merge-pathnames* program-dir ".cldpf-feed")))
+    (with-open-file (in config-file :direction :input)
+      (read in nil nil))))
+
+(defun write-feed-file (feed program-dir)
+  (let ((feed-file (merge-pathnames* program-dir ".cldpf-feed")))
+    (with-open-file (out config-file :direction :output :if-exists :supersede)
+      (print feed out))))

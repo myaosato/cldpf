@@ -14,4 +14,6 @@
       (format out "~%             :length ~S)" "")
       (format out "~% :title ~S" "")
       (format out "~% :description ~S" "")
+      (format out "~% :pubdate ~S" "")
+      (format out "~% :notes ()")
       (format out "~% :explicit nil)"))))
