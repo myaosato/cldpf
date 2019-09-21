@@ -6,8 +6,7 @@
                              (:import-from :cldpf/html :make-note-page
                               :make-index-page)
                              (:import-from :cldpf/item :make-item-file)
-                             (:import-from :cldpf/feed :write-feed-file
-                              :make-feed)
+                             (:import-from :cldpf/feed :make-feed)
                              (:import-from :cldpf/program :make-program)
                              (:import-from :cldpf/list 
                               :write-items-list :read-items-list
@@ -35,14 +34,20 @@
     (push item items)
     (write-feed-list feed program-dir)
     (write-items-list items program-dir)
-    (update-pages name program-dir)))
+    (update-pages name program-dir)
+    (make-feed-file feed program-dir)))
+
+(defun make-feed-file (feed program-dir)
+  (let ((rss (get-pages-feed-path program-dir)))
+    (with-open-file (out rss :direction :output :if-exists :supersede)
+      (format out "~A" (make-feed feed)))))
 
 (defun update-pages (name program-dir)
   (let ((program (read-program-list program-dir))
         (item (read-item-list name program-dir))
         (items (read-items-list program-dir)))
     (make-index-page (getf program :title)
-                     (format nil "~Afeed.rss" (getf program :link))
+                     (format nil "~Afeed.xml" (getf program :link))
                      items
                      (get-template-index-path)
                      (get-pages-index-path program-dir))
@@ -66,6 +71,9 @@
 
 (defun get-pages-index-path (program-dir)
   (merge-pathnames* (get-pages-dir-path program-dir) "index.html"))
+
+(defun get-pages-feed-path (program-dir)
+  (merge-pathnames* (get-pages-dir-path program-dir) "feed.xml"))
 
 (defun get-templates-dir-path ()
   (ensure-directory-pathname
