@@ -18,8 +18,8 @@
 (defun make-item-links (items)
   (loop for item in items
         collect (format nil 
-                        "<a href=\"~A\">~A</a>" 
-                        (getf item :url) (getf item :title))))
+                        "<a href=\"./notes/~A.html\">~A</a>" 
+                        (getf item :name) (getf item :title))))
 
 (defun make-note-page (item-title program-title audio-url notes note-template-path note-file-path)
   (let ((template (read-file-string note-template-path)))

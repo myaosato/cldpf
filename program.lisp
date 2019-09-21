@@ -11,6 +11,7 @@
   (let ((program-dir (make-program-directory name dir)))
     (make-program-config-file program-dir)
     (make-feed-list-file program-dir)
+    (make-items-list-file program-dir)
     (make-program-items-directory program-dir)
     (make-program-pages-directory program-dir)))
 
@@ -38,6 +39,11 @@
 
 (defun make-feed-list-file (program-dir)
   (let ((config-file (merge-pathnames* program-dir ".cldpf-feed")))
+    (with-open-file (out config-file :direction :output)
+      (format out "()"))))
+
+(defun make-items-list-file (program-dir)
+  (let ((config-file (merge-pathnames* program-dir ".cldpf-items")))
     (with-open-file (out config-file :direction :output)
       (format out "()"))))
 

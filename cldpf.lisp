@@ -9,16 +9,19 @@
                              (:import-from :cldpf/feed :write-feed-file
                               :make-feed)
                              (:import-from :cldpf/program :make-program)
-                             (:import-from :cldpf/list :read-item-file
-                              :read-program-file)
+                             (:import-from :cldpf/list 
+                              :write-items-list :read-items-list
+                              :read-feed-list :write-feed-list
+                              :read-item-list :read-program-list)
                              (:export :make-item-file :make-program :add-item)
                              (:intern))
 (in-package :cldpf/cldpf)
 ;;don't edit above
 (defun add-item (name program-dir)
-  (let ((program (read-program-file program-dir))
-        (item (read-item-file name program-dir))
-        (feed (read-feed-file program-dir)))
+  (let ((program (read-program-list program-dir))
+        (item (read-item-list name program-dir))
+        (feed (read-feed-list program-dir))
+        (items (read-items-list program-dir)))
     (setf (getf feed :title) (getf program :title))
     (setf (getf feed :link) (getf program :link))
     (setf (getf feed :author) (getf program :author))
@@ -28,15 +31,19 @@
     (setf (getf feed :explicit) (getf program :explicit))
     (setf (getf feed :image) (getf program :image))
     (push item (getf feed :items))
-    (write-feed-file feed program-dir)))
+    (setf (getf item :name) name)
+    (push item items)
+    (write-feed-list feed program-dir)
+    (write-items-list items program-dir)
+    (update-pages name program-dir)))
 
 (defun update-pages (name program-dir)
-  (let ((program (read-program-file program-dir))
-        (item (read-item-file name program-dir))
-        )
+  (let ((program (read-program-list program-dir))
+        (item (read-item-list name program-dir))
+        (items (read-items-list program-dir)))
     (make-index-page (getf program :title)
                      (format nil "~Afeed.rss" (getf program :link))
-                     '() ;; items ;; TODO
+                     items
                      (get-template-index-path)
                      (get-pages-index-path program-dir))
     (make-note-page (getf item :title)
