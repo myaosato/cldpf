@@ -20,6 +20,9 @@
   (if content 
       (format nil "<~A>~A</~A>" name content name)
       ""))
+(defun tag-with-text-attr (name text)
+  (format nil "<~A text=\"~A\" />" name text))
+  
  
 (defun make-item-content (plist)
   (list
@@ -49,8 +52,8 @@
     (tag "language" (getf plist :language))
     (tag "googleplay:author" (getf plist :author))
     (tag "itunes:author" (getf plist :author))
-    (tag "googleplay:category" (getf plist :category))
-    (tag "itunes:category" (getf plist :category))
+    (tag-with-text-attr "googleplay:category" (getf plist :category))
+    (tag-with-text-attr "itunes:category" (getf plist :category))
     (tag "description" (getf plist :description))
     (tag "googleplay:description" (getf plist :description))
     (tag "itunes:description" (getf plist :description))
