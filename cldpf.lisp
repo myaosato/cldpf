@@ -6,16 +6,21 @@
                               :format-timestring :now)
                              (:import-from :cldpf/html :make-note-page
                               :make-index-page)
-                             (:import-from :cldpf/item :make-item-file)
+                             (:import-from :cldpf/item :item-list-template)
                              (:import-from :cldpf/feed :make-feed)
                              (:import-from :cldpf/program :make-program)
                              (:import-from :cldpf/list :write-items-list
                               :read-items-list :read-feed-list :write-feed-list
                               :read-item-list :read-program-list)
-                             (:export :make-item-file :make-program :add-item)
+                             (:export :make-item :make-program :add-item)
                              (:intern))
 (in-package :cldpf/cldpf)
 ;;don't edit above
+(defun make-item (name program-dir)
+  (let* ((item-file (get-item-list-path name program-dir)))
+    (with-open-file (out item-file :direction :output)
+      (format out (item-list-template)))))
+
 (defun add-item (name program-dir)
   (let ((program (read-program-list program-dir))
         (item (read-item-list name program-dir))
