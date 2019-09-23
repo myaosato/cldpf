@@ -1,4 +1,5 @@
 (uiop/package:define-package :cldpf/cldpf (:nicknames) (:use :cl) (:shadow)
+                             (:import-from :cldpf/path)
                              (:import-from :uiop/pathname
                               :ensure-directory-pathname :merge-pathnames*)
                              (:import-from :local-time :+rfc-1123-format+
@@ -8,9 +9,8 @@
                              (:import-from :cldpf/item :make-item-file)
                              (:import-from :cldpf/feed :make-feed)
                              (:import-from :cldpf/program :make-program)
-                             (:import-from :cldpf/list 
-                              :write-items-list :read-items-list
-                              :read-feed-list :write-feed-list
+                             (:import-from :cldpf/list :write-items-list
+                              :read-items-list :read-feed-list :write-feed-list
                               :read-item-list :read-program-list)
                              (:export :make-item-file :make-program :add-item)
                              (:intern))
