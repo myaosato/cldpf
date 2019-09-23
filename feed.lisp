@@ -20,9 +20,9 @@
   (if content 
       (format nil "<~A>~A</~A>" name content name)
       ""))
+
 (defun tag-with-text-attr (name text)
   (format nil "<~A text=\"~A\" />" name text))
-  
  
 (defun make-item-content (plist)
   (list
