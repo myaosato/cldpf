@@ -80,8 +80,8 @@ program-dir
   (ensure-directory-pathname
    (merge-pathnames* (asdf:system-source-directory :cldpf) "templates")))
 
-(defun get-template-index-path ()
+(defun get-index-template-path ()
   (merge-pathnames* (get-templates-dir-path) "index.html"))
 
-(defun get-template-note-path ()
+(defun get-note-template-path ()
   (merge-pathnames* (get-templates-dir-path) "note.html"))
