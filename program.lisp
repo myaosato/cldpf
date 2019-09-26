@@ -1,4 +1,4 @@
-(uiop/package:define-package :cldpf/program (:nicknames) (:use :cl) (:shadow)
+(uiop/package:define-package :cldpf/program (:nicknames) (:use :cldpf/path :cl) (:shadow)
                              (:import-from :uiop/filesystem :file-exists-p
                               :directory-exists-p)
                              (:import-from :uiop/pathname :merge-pathnames*
@@ -9,11 +9,11 @@
 
 (defun make-program (name &key dir)
   (let ((program-dir (make-program-directory name dir)))
-    (make-program-config-file program-dir)
-    (make-feed-list-file program-dir)
-    (make-items-list-file program-dir)
-    (make-program-items-directory program-dir)
-    (make-program-pages-directory program-dir)))
+    (make-program-list program-dir)
+    (make-feed-list program-dir)
+    (make-items-list program-dir)
+    (make-items-dir program-dir)
+    (make-pages-dir program-dir)))
 
 (defun make-program-directory (name dir)
   (unless (directory-exists-p dir) (error "~A dose not exists" dir))
@@ -25,9 +25,9 @@
     (ensure-directories-exist program-dir)
     program-dir))
 
-(defun make-program-config-file (program-dir)
-  (let ((config-file (merge-pathnames* program-dir "program")))
-    (with-open-file (out config-file :direction :output)
+(defun make-program-list (program-dir)
+  (let ((program-list (get-program-list-path program-dir)))
+    (with-open-file (out program-list :direction :output)
       (format out "(:title ~S" "your podcast name")
       (format out "~% :link ~S" "your podcast page url")
       (format out "~% :author ~S" "your name")
@@ -37,34 +37,30 @@
       (format out "~% :description ~S" "")
       (format out "~% :explicit nil)"))))
 
-(defun make-feed-list-file (program-dir)
-  (let ((config-file (merge-pathnames* program-dir ".cldpf-feed")))
-    (with-open-file (out config-file :direction :output)
+(defun make-feed-list (program-dir)
+  (let ((feed-list (get-feed-list-path program-dir)))
+    (with-open-file (out feed-list :direction :output)
       (format out "()"))))
 
-(defun make-items-list-file (program-dir)
-  (let ((config-file (merge-pathnames* program-dir ".cldpf-items")))
-    (with-open-file (out config-file :direction :output)
+(defun make-items-list (program-dir)
+  (let ((items-file (get-items-list-path program-dir)))
+    (with-open-file (out items-file :direction :output)
       (format out "()"))))
 
-(defun make-program-items-directory (program-dir)
-  (let ((notes-dir (ensure-directory-pathname
-                    (merge-pathnames* program-dir "items"))))
-    (ensure-directories-exist notes-dir)))
+(defun make-items-dir (program-dir)
+  (let ((items-dir (get-items-dir-path program-dir)))
+    (ensure-directories-exist items-dir)))
 
-(defun make-program-pages-directory (program-dir)
-  (let ((pages-dir (ensure-directory-pathname
-                    (merge-pathnames* program-dir "pages"))))
+(defun make-pages-dir (program-dir)
+  (let (pages-dir (get-pages-dir-path program-dir))
     (ensure-directories-exist pages-dir)
-    (make-pages-audios-directory pages-dir)
-    (make-pages-notes-directory pages-dir)))
+    (make-audios-dir pages-dir)
+    (make-notes-dir pages-dir)))
 
-(defun make-pages-audios-directory (pages-dir)
-  (let ((audio-dir (ensure-directory-pathname
-                    (merge-pathnames* pages-dir "audios"))))
-    (ensure-directories-exist audio-dir)))
+(defun make-audios-dir (program-dir)
+  (let ((audios-dir (get-audios-dir-path program-dir)))
+    (ensure-directories-exist audios-dir)))
 
-(defun make-pages-notes-directory (pages-dir)
-  (let ((audio-dir (ensure-directory-pathname
-                    (merge-pathnames* pages-dir "notes"))))
-    (ensure-directories-exist audio-dir)))
+(defun make-notes-dir (program-dir)
+  (let ((notes-dir (get-notes-dir-path program-dir)))
+    (ensure-directories-exist notes-dir)))

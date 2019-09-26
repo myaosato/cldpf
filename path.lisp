@@ -8,8 +8,8 @@
                               :get-audios-dir-path :get-index-file-path
                               :get-feed-file-path :get-note-file-path
                               :get-audio-file-path
-                              :get-template-index-path
-                              :get-template-note-path)
+                              :get-index-template-path
+                              :get-note-template-path)
                              (:intern))
 (in-package :cldpf/path)
 ;;don't edit above
