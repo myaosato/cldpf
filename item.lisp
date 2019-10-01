@@ -3,11 +3,11 @@
 (in-package :cldpf/item)
 ;;don't edit above
 
-(defun item-list-template ()
+(defun item-list-template (&key length)
   (with-output-to-string (out)
     (format out "(:enclosure (:url ~S" "")
     (format out "~%             :type ~S" "")
-    (format out "~%             :length ~S)" "")
+    (format out "~%             :length ~S)" (if length length ""))
     (format out "~% :title ~S" "")
     (format out "~% :description ~S" "")
     (format out "~% :pubdate ~S" "")

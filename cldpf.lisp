@@ -1,5 +1,8 @@
 (uiop/package:define-package :cldpf/cldpf (:nicknames) (:use :cldpf/path :cl)
-                             (:shadow) (:import-from :cldpf/path)
+                             (:shadow)
+                             (:import-from :cldpf/audio :get-file-length
+                              :copy-audio)
+                             (:import-from :cldpf/path)
                              (:import-from :uiop/pathname
                               :ensure-directory-pathname :merge-pathnames*)
                              (:import-from :local-time :+rfc-1123-format+
@@ -16,10 +19,11 @@
                              (:intern))
 (in-package :cldpf/cldpf)
 ;;don't edit above
-(defun make-item (name program-dir)
-  (let* ((item-file (get-item-list-path name program-dir)))
+(defun make-item (name program-dir audio-source)
+  (let ((item-file (get-item-list-path name program-dir)))
     (with-open-file (out item-file :direction :output)
-      (format out (item-list-template)))))
+      (format out (item-list-template :length (get-file-length audio-source))))
+    (copy-audio name program-dir audio-source)))
 
 (defun add-item (name program-dir)
   (let ((program (read-program-list program-dir))
