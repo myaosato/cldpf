@@ -15,7 +15,8 @@
                              (:import-from :cldpf/list :write-items-list
                               :read-items-list :read-feed-list :write-feed-list
                               :read-item-list :read-program-list)
-                             (:export :make-item :make-program :add-item)
+                             (:export :update-item :make-item :make-program
+                              :add-item)
                              (:intern))
 (in-package :cldpf/cldpf)
 ;;don't edit above
@@ -26,14 +27,21 @@
     (copy-audio name program-dir audio-source)))
 
 (defun add-item (name program-dir)
+  (%update-item name program-dir t))
+
+(defun update-item (name program-dir)
+  (%update-item name program-dir nil))
+
+(defun %update-item (name program-dir &optional (add-item? nil))
   (let ((program (read-program-list program-dir))
         (item (read-item-list name program-dir))
         (feed (read-feed-list program-dir))
         (items (read-items-list program-dir)))
     (setf feed (update-feed program item feed))
     (write-feed-list feed program-dir)
-    (setf items (register-item name item items))
-    (write-items-list items program-dir)
+    (when add-item?
+      (setf items (register-item name item items))
+      (write-items-list items program-dir))
     (update-pages name program-dir)
     (make-feed-file feed program-dir)))
 
