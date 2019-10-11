@@ -5,14 +5,14 @@
 (in-package :cldpf/html)
 ;;don't edit above
 
-(defun make-index-page (program-title feed-url items index-template-path index-file-path)
+(defun make-index-page (program items index-template-path index-file-path)
   (let ((template (read-file-string index-template-path)))
     (with-open-file (out index-file-path :direction :output :if-exists :supersede)
       (format out template
-              program-title
-              feed-url
-              program-title
-              program-title
+              (getf program :title)
+              "./feed.xml"
+              (getf program :title)
+              (getf program :title)
               (make-item-links items)))))
 
 (defun make-item-links (items)
@@ -21,11 +21,16 @@
                         "<a href=\"./notes/~A.html\">~A</a>" 
                         (getf item :name) (getf item :title))))
 
-(defun make-note-page (item-title program-title audio-url notes note-template-path note-file-path)
+(defun make-note-page (item program note-template-path note-file-path)
   (let ((template (read-file-string note-template-path)))
     (with-open-file (out note-file-path :direction :output :if-exists :supersede)
       (format out template
-              program-title item-title
-              item-title
-              audio-url
-              notes))))
+              (getf program :title) 
+              (getf item :title)
+              (getf item :title)
+              (getf (getf item :enclosure) :url)
+              (getf item :notes)))))
+
+                             
+                             
+                             

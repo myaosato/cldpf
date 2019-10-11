@@ -15,8 +15,8 @@
                              (:import-from :cldpf/list :write-items-list
                               :read-items-list :read-feed-list :write-feed-list
                               :read-item-list :read-program-list)
-                             (:export :update-item :make-item :make-program
-                              :add-item)
+                             (:export :update-pages :update-item :make-item 
+                              :make-program :add-item)
                              (:intern))
 (in-package :cldpf/cldpf)
 ;;don't edit above
@@ -42,7 +42,7 @@
     (when add-item?
       (setf items (register-item name item items))
       (write-items-list items program-dir))
-    (update-pages name program-dir)
+    (add-page name program-dir)
     (make-feed-file feed program-dir)))
 
 (defun update-feed (program item feed)
@@ -62,22 +62,29 @@
   (push item items)
   items)
 
-(defun update-pages (name program-dir)
+(defun add-page (name program-dir)
   (let ((program (read-program-list program-dir))
         (item (read-item-list name program-dir))
         (items (read-items-list program-dir)))
-    (make-index-page (getf program :title)
-                     (format nil "./feed.xml")
-                     items
+    (make-index-page program items
                      (get-index-template-path)
                      (get-index-file-path program-dir))
-    (make-note-page (getf item :title)
-                    (getf program :title)
-                    (getf (getf item :enclosure) :url)
-                    (getf item :notes)
+    (make-note-page item program
                     (get-note-template-path)
                     (get-note-file-path name program-dir))))
 
+(defun update-pages (program-dir)
+  (let ((program (read-program-list program-dir))
+        (items (read-items-list program-dir)))
+    (make-index-page program items
+                     (get-index-template-path)
+                     (get-index-file-path program-dir))
+    (loop for data in items
+          do (let ((item (read-item-list (getf data :name) program-dir)))
+               (make-note-page item program
+                               (get-note-template-path)
+                               (get-note-file-path (getf data :name) program-dir))))))
+  
 (defun make-feed-file (feed program-dir)
   (let ((rss (get-feed-file-path program-dir)))
     (with-open-file (out rss :direction :output :if-exists :supersede)
