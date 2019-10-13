@@ -69,7 +69,7 @@
     (make-index-page program items
                      (get-index-template-path)
                      (get-index-file-path program-dir))
-    (make-note-page item program
+    (make-note-page name item program
                     (get-note-template-path)
                     (get-note-file-path name program-dir))))
 
@@ -81,7 +81,7 @@
                      (get-index-file-path program-dir))
     (loop for data in items
           do (let ((item (read-item-list (getf data :name) program-dir)))
-               (make-note-page item program
+               (make-note-page (getf data :name) item program
                                (get-note-template-path)
                                (get-note-file-path (getf data :name) program-dir))))))
   
