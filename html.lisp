@@ -9,6 +9,11 @@
   (let ((template (read-file-string index-template-path)))
     (with-open-file (out index-file-path :direction :output :if-exists :supersede)
       (format out template
+              (getf program :twitter)
+              (getf program :link)
+              (getf program :title)
+              (getf program :card-image)
+              (getf program :description)
               (getf program :title)
               "./feed.xml"
               (getf program :title)

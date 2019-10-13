@@ -34,6 +34,8 @@
       (format out "~% :language ~S" "your podcast language ISO 639-1")
       (format out "~% :category ~S" "")
       (format out "~% :image ~S" "image url")
+      (format out "~% :card-image ~S" "image url")
+      (format out "~% :twitter ~S" "image url")
       (format out "~% :description ~S" "")
       (format out "~% :explicit nil)"))))
 
