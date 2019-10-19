@@ -3,10 +3,10 @@
 (in-package :cldpf/item)
 ;;don't edit above
 
-(defun item-list-template (&key length)
+(defun item-list-template (&key length name url)
   (with-output-to-string (out)
-    (format out "(:enclosure (:url ~S" "")
-    (format out "~%             :type ~S" "")
+    (format out "(:enclosure (:url ~S" (format nil "~Aaudios/~A.mp3" url name))
+    (format out "~%             :type ~S" "audio/mpeg")
     (format out "~%             :length ~S)" (if length length ""))
     (format out "~% :title ~S" "")
     (format out "~% :description ~S" "")

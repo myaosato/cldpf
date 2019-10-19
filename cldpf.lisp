@@ -21,9 +21,12 @@
 (in-package :cldpf/cldpf)
 ;;don't edit above
 (defun make-item (name program-dir audio-source)
-  (let ((item-file (get-item-list-path name program-dir)))
+  (let ((item-file (get-item-list-path name program-dir))
+        (program (read-program-list program-dir)))
     (with-open-file (out item-file :direction :output)
-      (format out (item-list-template :length (get-file-length audio-source))))
+      (format out (item-list-template :length (get-file-length audio-source) 
+                                      :name name 
+                                      :url (getf program :link))))
     (copy-audio name program-dir audio-source)))
 
 (defun add-item (name program-dir)
