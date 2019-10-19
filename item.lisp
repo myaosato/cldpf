@@ -5,7 +5,7 @@
 
 (defun item-list-template (&key length name url)
   (with-output-to-string (out)
-    (format out "(:enclosure (:url ~S" (format nil "~Aaudios/~A.mp3" url name))
+    (format out "(:enclosure (:url ~S" (format nil "~Aaudios/~A.mp3" (with-/ url) name))
     (format out "~%             :type ~S" "audio/mpeg")
     (format out "~%             :length ~S)" (if length length ""))
     (format out "~% :title ~S" "")
@@ -13,3 +13,9 @@
     (format out "~% :pubdate ~S" "")
     (format out "~% :notes ()")
     (format out "~% :explicit nil)")))
+
+(defun with-/ (url)
+  (let ((last-char (elt url (1- (length url)))))
+    (if (not (char= #\/ last-char))
+        (format nil "~A~A" url #\/)
+        url)))
