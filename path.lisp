@@ -35,53 +35,48 @@ program-dir
 
 ;; LIST (SEXP) FILES
 (defun get-feed-list-path (program-dir)
-  (merge-pathnames* program-dir ".cldpf-feed"))
+  (merge-pathnames* ".cldpf-feed" program-dir))
 
 (defun get-items-list-path (program-dir)
-  (merge-pathnames* program-dir ".cldpf-items"))
+  (merge-pathnames* ".cldpf-items" program-dir))
 
 (defun get-program-list-path (program-dir)
-  (merge-pathnames* program-dir "program"))
+  (merge-pathnames* "program" program-dir))
 
 (defun get-items-dir-path (program-dir)
-  (ensure-directory-pathname
-   (merge-pathnames* program-dir "items")))
+  (merge-pathnames* "items/" program-dir))
 
 (defun get-item-list-path (name program-dir)
-   (merge-pathnames* (get-items-dir-path program-dir) name))
+   (merge-pathnames* name (get-items-dir-path program-dir)))
 
 ;; PAGE (XML/HTML) FILES
 (defun get-pages-dir-path (program-dir)
-  (ensure-directory-pathname
-   (merge-pathnames* program-dir "pages")))
+  (merge-pathnames* "pages/" program-dir))
 
 (defun get-notes-dir-path (program-dir)
-  (ensure-directory-pathname
-   (merge-pathnames* (get-pages-dir-path program-dir) "notes")))
+  (merge-pathnames* "notes/" (get-pages-dir-path program-dir)))
 
 (defun get-audios-dir-path (program-dir)
-  (ensure-directory-pathname
-   (merge-pathnames* (get-pages-dir-path program-dir) "audios")))
+  (merge-pathnames* "audios/" (get-pages-dir-path program-dir)))
 
 (defun get-index-file-path (program-dir)
-  (merge-pathnames* (get-pages-dir-path program-dir) "index.html"))
+  (merge-pathnames* "index.html" (get-pages-dir-path program-dir)))
 
 (defun get-feed-file-path (program-dir)
-  (merge-pathnames* (get-pages-dir-path program-dir) "feed.xml"))
+  (merge-pathnames* "feed.xml" (get-pages-dir-path program-dir)))
 
 (defun get-note-file-path (name program-dir)
-  (merge-pathnames* (get-notes-dir-path program-dir) (format nil "~A.html" name)))
+  (merge-pathnames* (format nil "~A.html" name) (get-notes-dir-path program-dir)))
 
 (defun get-audio-file-path (name program-dir)
-  (merge-pathnames* (get-audios-dir-path program-dir) (format nil "~A.mp3" name)))
+  (merge-pathnames* (format nil "~A.mp3" name) (get-audios-dir-path program-dir)))
 
 ;; TEMPLATES
 (defun get-templates-dir-path ()
-  (ensure-directory-pathname
-   (merge-pathnames* (asdf:system-source-directory :cldpf) "templates")))
+  (merge-pathnames* "templates/" (asdf:system-source-directory :cldpf)))
 
 (defun get-index-template-path ()
-  (merge-pathnames* (get-templates-dir-path) "index.html"))
+  (merge-pathnames* "index.html" (get-templates-dir-path)))
 
 (defun get-note-template-path ()
-  (merge-pathnames* (get-templates-dir-path) "note.html"))
+  (merge-pathnames* "note.html" (get-templates-dir-path)))
