@@ -4,6 +4,7 @@
   :class :package-inferred-system
   :author "myaosato"
   :license "MIT"
+  :pathname "src/"
   :mailto "tetu60u@yahoo.co.jp"
   :in-order-to ((test-op (test-op "cldpf/tests"))))
 
